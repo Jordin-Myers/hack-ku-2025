@@ -1,0 +1,1 @@
+def check_email(email): return 'No breach found (demo)'

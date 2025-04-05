@@ -1,0 +1,1 @@
+QUESTIONS = ['Is this email real or fake?']

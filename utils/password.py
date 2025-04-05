@@ -1,0 +1,1 @@
+def evaluate_password(p): return 'Strong' if len(p) > 8 else 'Weak'

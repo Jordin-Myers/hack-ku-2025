@@ -1,0 +1,25 @@
+<!-- templates/base.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Cybersecurity Toolkit</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="{{ url_for('index') }}">Home</a></li>
+            <li><a href="{{ url_for('quiz') }}">Phishing Quiz</a></li>
+            <li><a href="{{ url_for('pwned') }}">Pwned Checker</a></li>
+            <li><a href="{{ url_for('password') }}">Password Tool</a></li>
+            <li><a href="{{ url_for('iot') }}">IoT Dashboard</a></li>
+            <li><a href="{{ url_for('encrypt') }}">File Encryption</a></li>
+        </ul>
+    </nav>
+
+    <div class="content">
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>

@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Phishing Quiz</h1>
+{% for q in questions %}
+<p>{{ q }}</p>
+{% endfor %}
+{% endblock %}

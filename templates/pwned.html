@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Check if You've Been Pwned</h1>
+<form method='post'>
+    <input name='email'>
+    <button type='submit'>Check</button>
+</form>
+{% if result %}
+<p>{{ result }}</p>
+{% endif %}
+{% endblock %}

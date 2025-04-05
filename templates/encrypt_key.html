@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Encrypt Wallet Key</h2>
+<form method="post">
+    <label>Enter Wallet Secret:</label><br>
+    <input type="text" name="secret"><br><br>
+    <label>Password to Encrypt:</label><br>
+    <input type="password" name="password"><br><br>
+    <button type="submit">Encrypt</button>
+</form>
+{% if encrypted %}
+<p>Encrypted Key:</p>
+<pre>{{ encrypted }}</pre>
+{% endif %}
+{% endblock %}

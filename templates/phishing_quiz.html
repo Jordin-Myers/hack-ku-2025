@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Phishing Awareness Quiz</h2>
+<form method="post">
+    {% for q in questions %}
+        <p>{{ q.question }}</p>
+        {% for choice in q.choices %}
+            <label><input type="radio" name="{{ loop.index0 }}" value="{{ choice }}"> {{ choice }}</label><br>
+        {% endfor %}
+    {% endfor %}
+    <button type="submit">Submit Answers</button>
+</form>
+{% if score is not none %}
+<p>Your score: {{ score }}/{{ questions|length }}</p>
+{% endif %}
+{% endblock %}

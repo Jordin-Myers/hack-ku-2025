@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Wallet Hygiene Evaluator</h2>
+<form method="post">
+    <label>Have you backed up your seed phrase?</label><br>
+    <input type="radio" name="backup" value="yes"> Yes
+    <input type="radio" name="backup" value="no"> No<br><br>
+    
+    <label>Do you reuse the same password or seed phrase?</label><br>
+    <input type="radio" name="reuse" value="yes"> Yes
+    <input type="radio" name="reuse" value="no"> No<br><br>
+    
+    <button type="submit">Evaluate</button>
+</form>
+{% if score is not none %}
+<p>Your hygiene score: {{ score }}/2</p>
+{% endif %}
+{% endblock %}

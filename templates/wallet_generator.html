@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Wallet Generator</h2>
+{% if wallet %}
+<p><strong>Address:</strong> {{ wallet.classic_address }}</p>
+<p><strong>Seed:</strong> {{ wallet.seed }}</p>
+<p>Remember to store your seed securely and never share it with anyone.</p>
+{% endif %}
+<form method="post">
+    <button type="submit">Generate Wallet</button>
+</form>
+{% endblock %}

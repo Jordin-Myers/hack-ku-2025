@@ -1,1 +1,0 @@
-VULNS = ['Default passwords', 'No firmware updates', 'Open ports']

@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Transaction Scanner</h2>
+<form method="post">
+    <label for="address">Enter Wallet Address:</label>
+    <input type="text" name="address" required>
+    <button type="submit">Scan</button>
+</form>
+{% if transactions %}
+<h3>Recent Transactions</h3>
+<ul>
+    {% for tx in transactions %}
+        <li>{{ tx }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+{% endblock %}

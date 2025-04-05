@@ -1,25 +1,24 @@
-<!-- templates/base.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Cybersecurity Toolkit</title>
+    <title>TrustRipple</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <nav>
         <ul>
             <li><a href="{{ url_for('index') }}">Home</a></li>
-            <li><a href="{{ url_for('quiz') }}">Phishing Quiz</a></li>
-            <li><a href="{{ url_for('pwned') }}">Pwned Checker</a></li>
-            <li><a href="{{ url_for('password') }}">Password Tool</a></li>
-            <li><a href="{{ url_for('iot') }}">IoT Dashboard</a></li>
-            <li><a href="{{ url_for('encrypt') }}">File Encryption</a></li>
+            <li><a href="{{ url_for('wallet_generator') }}">Wallet Generator</a></li>
+            <li><a href="{{ url_for('phishing_quiz') }}">Phishing Quiz</a></li>
+            <li><a href="{{ url_for('wallet_scanner') }}">Wallet Scanner</a></li>
+            <li><a href="{{ url_for('hygiene_check') }}">Wallet Hygiene</a></li>
+            <li><a href="{{ url_for('encrypt_key_route') }}">Encrypt Key</a></li>
+            <li><a href="{{ url_for('safety_checklist') }}">Safety Checklist</a></li>
         </ul>
     </nav>
-
-    <div class="content">
+    <main class="container">
         {% block content %}{% endblock %}
-    </div>
+    </main>
 </body>
 </html>

@@ -1,15 +1,26 @@
 {% extends "base.html" %}
 {% block content %}
-<h2>Encrypt Wallet Key</h2>
-<form method="post">
-    <label>Enter Wallet Secret:</label><br>
-    <input type="text" name="secret"><br><br>
-    <label>Password to Encrypt:</label><br>
-    <input type="password" name="password"><br><br>
+<h2>🔐 Encrypt Your Wallet Secret</h2>
+
+<form method="post" class="quiz-form" autocomplete="off">
+    <div class="quiz-question">
+        <p><strong>Wallet Secret (Seed):</strong></p>
+        <input type="text" name="secret" placeholder="Enter your wallet seed..." required>
+    </div>
+
+    <div class="quiz-question">
+        <p><strong>Password:</strong></p>
+        <input type="password" name="password" placeholder="Create a strong password..." required>
+    </div>
+
     <button type="submit">Encrypt</button>
 </form>
-{% if encrypted %}
-<p>Encrypted Key:</p>
-<pre>{{ encrypted }}</pre>
+
+{% if encrypted_key %}
+    <div class="quiz-form" style="margin-top: 2rem;">
+        <p><strong>Encrypted Result:</strong></p>
+        <textarea readonly style="width: 100%; height: 120px;">{{ encrypted_key }}</textarea>
+        <p style="font-size: 0.9rem; color: #6b7280;">Save this result securely. You&apos;ll need your password to decrypt it later.</p>
+    </div>
 {% endif %}
 {% endblock %}

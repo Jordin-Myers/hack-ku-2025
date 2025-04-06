@@ -1,17 +1,55 @@
 {% extends "base.html" %}
 {% block content %}
-<h2>Transaction Scanner</h2>
-<form method="post">
-    <label for="address">Enter Wallet Address:</label>
-    <input type="text" name="address" required>
-    <button type="submit">Scan</button>
+<h2>📊 Wallet Scanner</h2>
+<form method="POST" autocomplete="off">
+  <label for="wallet_address">XRPL Wallet Address:</label>
+  <input
+    type="text"
+    id="wallet_address"
+    name="wallet_address"
+    placeholder="Enter XRPL wallet address"
+    value="{{ address or '' }}"
+    required
+  >
+  <button type="submit">🔍 Scan Wallet</button>
 </form>
+
 {% if transactions %}
-<h3>Recent Transactions</h3>
-<ul>
-    {% for tx in transactions %}
-        <li>{{ tx }}</li>
-    {% endfor %}
-</ul>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Amount (XRP)</th>
+        <th>Destination</th>
+        <th>Suspicious Flags</th>
+        <th>Explorer Link</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for tx in transactions %}
+        <tr>
+          <td>{{ tx.type }}</td>
+          <td>{{ tx.amount }}</td>
+          <td>{{ tx.destination }}</td>
+          <td>
+            <ul>
+              {% for flag in tx.suspicious %}
+                <li class="{% if '✅' in flag %}safe-flag{% else %}alert-flag{% endif %}">{{ flag }}</li>
+              {% endfor %}
+            </ul>
+          </td>
+          <td>
+            {% if tx.hash %}
+              <a href="https://testnet.xrpl.org/transactions/{{ tx.hash }}" target="_blank">View</a>
+            {% else %}
+              —
+            {% endif %}
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% else %}
+  <p>No transactions found for this wallet. Try sending test XRP to generate activity.</p>
 {% endif %}
 {% endblock %}

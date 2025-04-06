@@ -1,12 +1,60 @@
 {% extends "base.html" %}
 {% block content %}
-<h2>Wallet Generator</h2>
-{% if wallet %}
-<p><strong>Address:</strong> {{ wallet.classic_address }}</p>
-<p><strong>Seed:</strong> {{ wallet.seed }}</p>
-<p>Remember to store your seed securely and never share it with anyone.</p>
+<h2>🔐 Wallet Generator</h2>
+
+{% if wallet and wallet.address %}
+    <p><strong>Address:</strong> {{ wallet.address }}</p>
+
+    <p><strong>Seed:</strong>
+        <span id="encrypted-seed">••••••••••••••••••••••••</span>
+        <button onclick="revealSeed()" id="decrypt-button">🔓 Reveal</button>
+    </p>
+
+    <!-- Hidden encrypted seed for JS access -->
+    <textarea id="hidden-encrypted" style="display:none;">{{ wallet.seed }}</textarea>
+{% elif wallet and wallet.error %}
+    <p style="color: red;"><strong>Error:</strong> {{ wallet.error }}</p>
 {% endif %}
-<form method="post">
+
+<form method="post" class="quiz-form">
+    <input type="hidden" name="action" value="generate">
+    <div class="quiz-question">
+      <p><strong>Create a password to encrypt your wallet seed:</strong></p>
+      <input type="password" name="password" placeholder="Enter a strong password..." required autocomplete="off">
+    </div>
     <button type="submit">Generate Wallet</button>
 </form>
+
+{% if wallet and wallet.address %}
+    <div style="margin-top: 1rem;">
+        <a href="https://testnet.xrpl.org/accounts/{{ wallet.address }}" target="_blank">
+            <button id="view-wallet-button">🔎 View Wallet on XRPL Explorer</button>
+        </a>
+    </div>
+{% endif %}
 {% endblock %}
+
+{% block scripts %}
+<script>
+    function revealSeed() {
+        const password = prompt("Enter the password you used to encrypt this wallet:");
+        if (!password) return;
+    
+        fetch("/decrypt-seed", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ password })
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                document.getElementById("encrypted-seed").innerText = data.seed;
+                document.getElementById("decrypt-button").disabled = true;
+            } else {
+                alert("❌ Decryption failed. Try again.");
+            }
+        });
+    }
+</script>
+{% endblock %}
+

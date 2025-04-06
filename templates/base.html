@@ -5,20 +5,53 @@
     <title>TrustRipple</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
+{% block scripts %}{% endblock %}
 <body>
-    <nav>
-        <ul>
-            <li><a href="{{ url_for('index') }}">Home</a></li>
+    <nav class="navbar">
+        <div class="nav-container">
+          <div class="logo">
+            <a href="{{ url_for('index') }}">TrustRipple</a>
+          </div>
+      
+          <button class="hamburger" onclick="toggleNav()">☰</button>
+      
+          <ul class="nav-links" id="nav-links">
             <li><a href="{{ url_for('wallet_generator') }}">Wallet Generator</a></li>
             <li><a href="{{ url_for('phishing_quiz') }}">Phishing Quiz</a></li>
             <li><a href="{{ url_for('wallet_scanner') }}">Wallet Scanner</a></li>
             <li><a href="{{ url_for('hygiene_check') }}">Wallet Hygiene</a></li>
             <li><a href="{{ url_for('encrypt_key_route') }}">Encrypt Key</a></li>
-            <li><a href="{{ url_for('safety_checklist') }}">Safety Checklist</a></li>
-        </ul>
+            <li><a href="{{ url_for('safety_checklist') }}">Checklist</a></li>
+            <li><a href="{{ url_for('logout') }}" class="logout-button">Logout</a></li>
+          </ul>
+      
+          <div class="wallet-info">
+            {% if wallet.address %}
+              <p><strong>Wallet:</strong> {{ wallet.address }}</p>
+              <p><strong>Balance:</strong> {{ wallet.balance }}</p>
+            {% endif %}
+          </div>
+        </div>
     </nav>
+                     
     <main class="container">
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <div class="flash-messages">
+              {% for message in messages %}
+                <div class="alert">{{ message }}</div>
+              {% endfor %}
+            </div>
+          {% endif %}
+        {% endwith %}
+      
         {% block content %}{% endblock %}
-    </main>
+    </main>  
+    <script>
+        function toggleNav() {
+          const nav = document.getElementById("nav-links");
+          nav.classList.toggle("show");
+        }
+    </script>      
 </body>
 </html>

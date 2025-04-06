@@ -1,5 +1,35 @@
 {% extends "base.html" %}
 {% block content %}
-<h1>Welcome to TrustRipple</h1>
-<p>Your secure companion for using the XRP Ledger.</p>
+<h2>🏠 Dashboard</h2>
+
+{% if not all_done %}
+  <div class="quiz-reminder">
+    <h3>🧪 Wallet Health Check Not Complete</h3>
+    <p>To see your wallet health score, please complete the following:</p>
+    <ul>
+      {% if phishing_score is none %}
+        <li><a href="{{ url_for('phishing_quiz') }}">🚨 Phishing Awareness Quiz</a></li>
+      {% endif %}
+      {% if hygiene_score is none %}
+        <li><a href="{{ url_for('hygiene_check') }}">🧼 Wallet Hygiene Evaluation</a></li>
+      {% endif %}
+    </ul>
+  </div>
+{% else %}
+  <div class="wallet-health">
+    <h3>✅ Wallet Health Summary</h3>
+    <p><strong>Phishing Score:</strong> {{ phishing_score }} / {{ phishing_total }}</p>
+    <p><strong>Hygiene Score:</strong> {{ hygiene_score }} / {{ hygiene_total }}</p>
+
+    <p><strong>Overall Status:</strong>
+      {% if phishing_score >= 4 and hygiene_score == 4 %}
+        🟢 Excellent
+      {% elif phishing_score >= 3 %}
+        🟡 Moderate
+      {% else %}
+        🔴 Needs Attention
+      {% endif %}
+    </p>
+  </div>
+{% endif %}
 {% endblock %}

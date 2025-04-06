@@ -1,7 +1,22 @@
-def evaluate_hygiene(seed: str, backed_up: bool, reused: bool) -> int:
-    score = 0
-    if backed_up:
-        score += 1
-    if not reused:
-        score += 1
-    return score
+HYGIENE_QUESTIONS = [
+    {
+        "question": "Have you securely backed up your seed phrase (e.g., on paper, hardware wallet, or encrypted USB)?",
+        "choices": ["Yes", "No"],
+        "answer": "Yes"
+    },
+    {
+        "question": "Have you reused the same seed phrase or password across multiple wallets or platforms?",
+        "choices": ["Yes", "No"],
+        "answer": "No"
+    },
+    {
+        "question": "Do you store your seed phrase online (e.g., Notes app, Google Drive, email)?",
+        "choices": ["Yes", "No"],
+        "answer": "No"
+    },
+    {
+        "question": "Do you use two-factor authentication (2FA) for services connected to your wallet?",
+        "choices": ["Yes", "No"],
+        "answer": "Yes"
+    }
+]

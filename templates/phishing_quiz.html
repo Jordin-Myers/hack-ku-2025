@@ -1,16 +1,25 @@
 {% extends "base.html" %}
 {% block content %}
-<h2>Phishing Awareness Quiz</h2>
+<h2>🎣 Phishing Awareness Quiz</h2>
+
+{% if score is none %}
 <form method="post">
     {% for q in questions %}
-        <p>{{ q.question }}</p>
-        {% for choice in q.choices %}
-            <label><input type="radio" name="{{ loop.index0 }}" value="{{ choice }}"> {{ choice }}</label><br>
-        {% endfor %}
+        <div class="quiz-question">
+            <p><strong>Scenario {{ loop.index }}:</strong> {{ q.question }}</p>
+            {% set q_index = loop.index0 %}
+            {% for choice in q.choices %}
+                <label>
+                    <input type="radio" name="q{{ q_index }}" value="{{ choice }}" required>
+                    {{ choice }}
+                </label><br>
+            {% endfor %}
+        </div>
     {% endfor %}
     <button type="submit">Submit Answers</button>
 </form>
-{% if score is not none %}
-<p>Your score: {{ score }}/{{ questions|length }}</p>
+{% else %}
+<p><strong>Your score:</strong> {{ score }} / {{ questions | length }}</p>
+<a href="{{ url_for('phishing_quiz') }}"><button>Try Again</button></a>
 {% endif %}
 {% endblock %}

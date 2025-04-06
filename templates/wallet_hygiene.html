@@ -1,18 +1,25 @@
 {% extends "base.html" %}
 {% block content %}
-<h2>Wallet Hygiene Evaluator</h2>
+<h2>🧼 Wallet Hygiene Evaluation</h2>
+
+{% if score is none %}
 <form method="post">
-    <label>Have you backed up your seed phrase?</label><br>
-    <input type="radio" name="backup" value="yes"> Yes
-    <input type="radio" name="backup" value="no"> No<br><br>
-    
-    <label>Do you reuse the same password or seed phrase?</label><br>
-    <input type="radio" name="reuse" value="yes"> Yes
-    <input type="radio" name="reuse" value="no"> No<br><br>
-    
+    {% for q in questions %}
+        <div class="quiz-question">
+            <p><strong>{{ loop.index }}.</strong> {{ q.question }}</p>
+            {% set q_index = loop.index0 %}
+            {% for choice in q.choices %}
+                <label>
+                    <input type="radio" name="q{{ q_index }}" value="{{ choice }}" required>
+                    {{ choice }}
+                </label><br>
+            {% endfor %}
+        </div>
+    {% endfor %}
     <button type="submit">Evaluate</button>
 </form>
-{% if score is not none %}
-<p>Your hygiene score: {{ score }}/2</p>
+{% else %}
+<p><strong>Your hygiene score:</strong> {{ score }} / {{ questions | length }}</p>
+<a href="{{ url_for('hygiene_check') }}"><button>Try Again</button></a>
 {% endif %}
 {% endblock %}

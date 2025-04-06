@@ -1,35 +1,88 @@
 {% extends "base.html" %}
 {% block content %}
-<h2>🏠 Dashboard</h2>
+
+<h2 class="page-title">🏠 Dashboard</h2>
 
 {% if not all_done %}
-  <div class="quiz-reminder">
+  <div class="card warning-card">
     <h3>🧪 Wallet Health Check Not Complete</h3>
-    <p>To see your wallet health score, please complete the following:</p>
-    <ul>
+    <p>Please complete the following to generate your full wallet health report:</p>
+    <ul class="checklist">
       {% if phishing_score is none %}
-        <li><a href="{{ url_for('phishing_quiz') }}">🚨 Phishing Awareness Quiz</a></li>
+        <li><a href="{{ url_for('phishing_quiz') }}">🚨 Take the Phishing Awareness Quiz</a></li>
       {% endif %}
       {% if hygiene_score is none %}
-        <li><a href="{{ url_for('hygiene_check') }}">🧼 Wallet Hygiene Evaluation</a></li>
+        <li><a href="{{ url_for('hygiene_check') }}">🧼 Complete the Wallet Hygiene Evaluation</a></li>
       {% endif %}
     </ul>
   </div>
-{% else %}
-  <div class="wallet-health">
-    <h3>✅ Wallet Health Summary</h3>
-    <p><strong>Phishing Score:</strong> {{ phishing_score }} / {{ phishing_total }}</p>
-    <p><strong>Hygiene Score:</strong> {{ hygiene_score }} / {{ hygiene_total }}</p>
-
-    <p><strong>Overall Status:</strong>
-      {% if phishing_score >= 4 and hygiene_score == 4 %}
-        🟢 Excellent
-      {% elif phishing_score >= 3 %}
-        🟡 Moderate
-      {% else %}
-        🔴 Needs Attention
-      {% endif %}
-    </p>
-  </div>
 {% endif %}
+
+<div class="module-grid">
+
+  {% if all_done %}
+  <div class="card">
+    <h3>✅ Wallet Health Summary</h3>
+    <ul class="summary-list">
+      <li><strong>Phishing Score:</strong> {{ phishing_score }} / {{ phishing_total }}</li>
+      <li><strong>Hygiene Score:</strong> {{ hygiene_score }} / {{ hygiene_total }}</li>
+      <li><strong>Overall Status:</strong>
+        {% if phishing_score >= 4 and hygiene_score == 4 %}
+          <span class="green-status">🟢 Excellent</span>
+        {% elif phishing_score >= 3 %}
+          <span class="yellow-status">🟡 Moderate</span>
+        {% else %}
+          <span class="red-status">🔴 Needs Attention</span>
+        {% endif %}
+      </li>
+    </ul>
+  </div>
+  {% endif %}
+
+  {% if wallet_stats.address %}
+  <div class="card">
+    <h3>📄 Wallet Snapshot</h3>
+    <ul class="summary-list">
+      <li><strong>Address:</strong> {{ wallet_stats.address }}</li>
+      <li><strong>Live Balance:</strong> {{ wallet_stats.balance }}</li>
+      <li><strong>Transaction Count:</strong> {{ wallet_stats.tx_count }}</li>
+      <li><strong>Wallet Age:</strong> {{ wallet_stats.age }}</li>
+    </ul>
+  </div>
+  {% endif %}
+
+</div>
+
+{% if recent_txs %}
+<div class="card">
+  <h3>📬 Recent Transactions</h3>
+  <table class="custom-table">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Amount</th>
+        <th>To</th>
+        <th>Flag</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for tx in recent_txs[:5] %}
+        <tr>
+          <td>{{ tx.type or "Unknown" }}</td>
+          <td>{{ tx.amount }}</td>
+          <td>{{ tx.destination }}</td>
+          <td>
+            {% if tx.suspicious and tx.suspicious|length > 0 %}
+              <span class="alert-flag">{{ tx.suspicious[0] }}</span>
+            {% else %}
+              <span class="safe-flag">No suspicious activity found</span>
+            {% endif %}
+          </td>          
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endif %}
+
 {% endblock %}

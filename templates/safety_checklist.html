@@ -1,11 +1,65 @@
 {% extends "base.html" %}
 {% block content %}
-<h2>DeFi & Payments Safety Checklist</h2>
-<ul>
-    <li>✅ Double-check contract addresses before interacting</li>
-    <li>✅ Never share your seed phrase</li>
-    <li>✅ Use hardware wallets for large amounts</li>
-    <li>✅ Check if a platform is audited</li>
-    <li>✅ Be skeptical of free airdrops and giveaways</li>
-</ul>
+<h2>🔐 DeFi & Payments Safety Checklist</h2>
+
+<div class="card">
+  <h3>1. Validate All Contract Addresses</h3>
+  <p>
+    Always confirm that the contract address you're interacting with is official. Use trusted sources like verified DeFi dashboards, project websites, or blockchain explorers.
+  </p>
+  <ul class="checklist">
+    <li>✅ Check the address on the project's official site</li>
+    <li>✅ Compare with listings on CoinGecko, Etherscan, or XRPL Explorer</li>
+    <li>✅ Avoid shortened or obfuscated links</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3>2. Protect Your Seed Phrase & Private Keys</h3>
+  <p>
+    Your seed phrase is the master key to your wallet. If someone has it, they have full access to your funds.
+  </p>
+  <ul class="checklist">
+    <li>✅ Never enter your seed phrase into a website</li>
+    <li>✅ Store it offline in a secure location</li>
+    <li>✅ Use encrypted backups and avoid taking screenshots</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3>3. Use Hardware Wallets for Significant Funds</h3>
+  <p>
+    Hardware wallets isolate your private key from the internet, drastically reducing the risk of hacks or malware theft.
+  </p>
+  <ul class="checklist">
+    <li>✅ Only buy wallets from official vendors</li>
+    <li>✅ Confirm transactions on the device screen</li>
+    <li>✅ Avoid using hardware wallets on public computers</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3>4. Confirm Audit & Security Reviews</h3>
+  <p>
+    Many DeFi platforms undergo smart contract audits to ensure security. Only use platforms with reputable audits.
+  </p>
+  <ul class="checklist">
+    <li>✅ Check for third-party audit reports (e.g., Certik, Trail of Bits)</li>
+    <li>✅ Read user feedback on Twitter or Reddit</li>
+    <li>✅ Avoid new projects with anonymous teams and no audits</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3>5. Be Skeptical of Airdrops, Giveaways, and Promises of Free Money</h3>
+  <p>
+    Scams often use urgency and rewards to trick users into signing malicious transactions or giving up credentials.
+  </p>
+  <ul class="checklist">
+    <li>✅ Don’t connect your wallet to unknown dApps</li>
+    <li>✅ Never pay to claim an airdrop</li>
+    <li>✅ Double-check project legitimacy on social media and forums</li>
+  </ul>
+</div>
+
 {% endblock %}

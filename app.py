@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, send_file, flash, session, url_for
-from utils.wallet import send_test_transactions, create_wallet
+from utils.wallet import send_test_transactions, create_wallet, get_live_balance
 from utils.phishing import PHISHING_QUESTIONS
 from utils.hygiene import HYGIENE_QUESTIONS
 from utils.encryption import encrypt_key, decrypt_key
@@ -37,34 +37,62 @@ def make_session_permanent():
     session.permanent = True
 
 @app.context_processor
-def inject_wallet():
-    return {
-        "wallet": {
-            "address": session.get("wallet_address"),
-            "balance": session.get("wallet_balance")
-        }
-    }
+def inject_wallet_info():
+    address = session.get("wallet_address")
+    balance = get_live_balance(address) if address else None
+    print("[Context] Wallet Address in session:", address)
+    return dict(
+        wallet_address=address,
+        wallet_balance=balance
+    )
 
 @app.route('/')
 def index():
-    phishing_score = session.get('phishing_score')
-    hygiene_score = session.get('hygiene_score')
+    phishing_score = session.get("phishing_score")
+    hygiene_score = session.get("hygiene_score")
 
     try:
         phishing_score = int(phishing_score) if phishing_score is not None else None
-        hygiene_score = int(hygiene_score) if hygiene_score is not None else None
     except ValueError:
         phishing_score = None
+
+    try:
+        hygiene_score = int(hygiene_score) if hygiene_score is not None else None
+    except ValueError:
         hygiene_score = None
 
     all_done = phishing_score is not None and hygiene_score is not None
 
-    return render_template('index.html',
-                           phishing_score=phishing_score,
-                           hygiene_score=hygiene_score,
-                           phishing_total=len(PHISHING_QUESTIONS),
-                           hygiene_total=len(HYGIENE_QUESTIONS),
-                           all_done=all_done)
+    # Wallet stats
+    wallet_address = session.get("wallet_address")
+    wallet_stats = {}
+    recent_txs = []
+
+    if wallet_address:
+        try:
+            wallet_stats["balance"] = get_live_balance(wallet_address)
+            wallet_stats["address"] = wallet_address
+
+            # Optional placeholder/fallback
+            wallet_stats["age"] = "Testnet (n/a)"
+            wallet_stats["tx_count"] = 0
+
+            recent_txs = get_recent_transactions(wallet_address)
+            wallet_stats["tx_count"] = len(recent_txs)
+
+        except Exception as e:
+            print("[Dashboard] Failed to fetch wallet info:", e)
+
+    return render_template(
+        "index.html",
+        phishing_score=phishing_score,
+        hygiene_score=hygiene_score,
+        phishing_total=5,
+        hygiene_total=4,
+        all_done=all_done,
+        wallet_stats=wallet_stats,
+        recent_txs=recent_txs
+    )
 
 
 @app.route('/wallet-generator', methods=['GET', 'POST'])
@@ -75,29 +103,39 @@ def wallet_generator():
     if request.method == 'POST':
         session.permanent = True
         action = request.form.get('action')
+        
         if action == 'generate':
             password = request.form.get('password', '').strip()
-            hashed_pw = hashlib.sha256(password.encode()).hexdigest()
-            session['wallet_password_hash'] = hashed_pw
+
+            # ✅ Check if password is actually provided *before hashing*
             if not password:
                 flash("Password is required to encrypt your wallet.")
                 return redirect(url_for('wallet_generator'))
 
+            # ✅ Safe to hash and store after check
+            hashed_pw = hashlib.sha256(password.encode()).hexdigest()
+            session['wallet_password_hash'] = hashed_pw
+
             wallet = create_wallet()
+            if not wallet or not hasattr(wallet, "seed"):
+                flash("Failed to generate wallet.")
+                return redirect(url_for('wallet_generator'))
+
             encrypted_seed = encrypt_key(wallet.seed, password)
 
             session['wallet_address'] = wallet.address
             session['wallet_seed'] = encrypted_seed
             session['wallet_balance'] = wallet.balance
             session['wallet_password'] = password
+
             return redirect(url_for('wallet_generator'))
 
     # Show previously generated wallet
     if 'wallet_address' in session:
         wallet = SimpleNamespace(
-            address=session['wallet_address'],
-            seed=session['wallet_seed'],
-            balance=session['wallet_balance']
+            address=session.get('wallet_address'),
+            seed=session.get('wallet_seed'),
+            balance=session.get('wallet_balance')
         )
 
     return render_template('wallet_generator.html', wallet=wallet)

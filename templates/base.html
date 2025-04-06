@@ -26,9 +26,9 @@
           </ul>
       
           <div class="wallet-info">
-            {% if wallet.address %}
-              <p><strong>Wallet:</strong> {{ wallet.address }}</p>
-              <p><strong>Balance:</strong> {{ wallet.balance }}</p>
+            {% if wallet_address %}
+                <p><strong>Wallet:</strong> {{ wallet_address }}</p>
+                <p><strong>Live Balance:</strong> {{ wallet_balance }}</p>
             {% endif %}
           </div>
         </div>

@@ -5,8 +5,28 @@ from xrpl.wallet import Wallet
 from xrpl.models.transactions import Payment
 from xrpl.transaction import autofill_and_sign, reliable_submission
 from xrpl.utils import xrp_to_drops
+from xrpl.account import get_balance
+from xrpl.models.requests import AccountInfo
 
 client = JsonRpcClient("https://s.altnet.rippletest.net:51234")
+
+def get_live_balance(address):
+    try:
+        if not address:
+            return "Unavailable"
+        
+        req = AccountInfo(
+            account=address,
+            ledger_index="validated",
+            strict=True
+        )
+        response = client.request(req)
+        balance_drops = int(response.result["account_data"]["Balance"])
+        balance_xrp = balance_drops / 1_000_000
+        return f"{balance_xrp:.6f} XRP"
+    except Exception as e:
+        print(f"[get_live_balance] Error for {address}: {e}")
+        return "Unavailable"
 
 def create_wallet():
     try:

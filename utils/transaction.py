@@ -34,7 +34,7 @@ def get_recent_transactions(address: str):
                 amount_value = 0
 
             suspicious = []
-            if amount_value > 500:
+            if amount_value > 99:
                 suspicious.append("⚠️ Large Transfer")
             if amount_value < 0.01:
                 suspicious.append("⚠️ Microtransaction (Possible Dusting Attack)")

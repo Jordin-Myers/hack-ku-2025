@@ -173,6 +173,78 @@ body {
   color: #065f46;
 }
 
+.page-title {
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Dashboard Cards */
+.card {
+  background-color: #1e293b; /* Dark background */
+  border: 1px solid #334155;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  margin-bottom: 1.5rem;
+  color: #f1f5f9; /* Ensure text is readable */
+}
+
+.module-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+/* Fix for warning card specifically */
+.warning-card {
+  background-color: #334155;
+  border-left: 6px solid #facc15;
+  padding: 1.5rem;
+  border-radius: 8px;
+  color: #f1f5f9;
+}
+
+
+.summary-list {
+  list-style: none;
+  padding-left: 0;
+  margin-top: 0.5rem;
+}
+
+.checklist {
+  margin-top: 1rem;
+  list-style: disc;
+  padding-left: 1.25rem;
+}
+
+.green-status {
+  color: green;
+  font-weight: bold;
+}
+.yellow-status {
+  color: #b45309;
+  font-weight: bold;
+}
+.red-status {
+  color: red;
+  font-weight: bold;
+}
+
+.custom-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+.custom-table th, .custom-table td {
+  padding: 0.75rem;
+  border-bottom: 1px solid #ddd;
+}
+.custom-table tr:hover {
+  background-color: #334155; /* Darker hover color for readability */
+}
+
+
 nav {
   background-color: #0f172a;
   padding: 1rem 2rem;
